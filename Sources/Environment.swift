@@ -76,8 +76,10 @@ enum Environment {
             {
                 #if os(macOS)
                     return NSScreen.main?.frame.size
+                #elseif os(visionOS)
+                return Optional.some(CGSize(width: 3660, height: 3200))
                 #elseif targetEnvironment(macCatalyst)
-                    return Optional.some(UIScreen.main.bounds.size)
+                return Optional.some(UIScreen.main.bounds.size)
                 #else
                     return Optional.some(UIScreen.main.bounds.size)
                 #endif
@@ -133,6 +135,9 @@ enum Environment {
         }()
 
         static let idfa: String? = {
+#if os(visionOS)
+            return nil
+#else
             guard !Adapty.Configuration.idfaCollectionDisabled else { return nil }
             // Get and return IDFA
             if #available(iOS 9.0, macOS 10.14, *) {
@@ -140,6 +145,7 @@ enum Environment {
             } else {
                 return nil
             }
+#endif
         }()
 
         static let idfv: String? = {

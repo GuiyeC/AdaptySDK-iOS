@@ -70,6 +70,7 @@ final class LifecycleManager {
                 self?.scheduleProfileUpdate(after: 0.0)
             }
 
+        #if !os(visionOS)
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(forName: Notification.Name.SKStorefrontCountryCodeDidChange,
                                                        object: nil,
@@ -79,6 +80,7 @@ final class LifecycleManager {
                     self?.needsSyncStorefrontCountry = true
                 }
             }
+        #endif
         #endif
     }
 
